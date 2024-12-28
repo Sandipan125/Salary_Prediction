@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Predict Salary</h1>
+    <form id="predictionForm">
+        <label for="years">Years of Experience:</label>
+        <input type="number" id="years" name="years" step="0.1" required>
+        <button type="submit">Predict</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const years = document.getElementById('years').value;
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ years_of_experience: years })
+            });
+            const data = await response.json();
+            document.getElementById('result').textContent = `Predicted Salary: ${data.predicted_salary}`;
+        });
+    </script>
+</body>
+</html>
